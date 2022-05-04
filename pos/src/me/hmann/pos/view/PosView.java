@@ -1,7 +1,6 @@
 package me.hmann.pos.view;
 
 import me.hmann.pos.controller.PosController;
-import me.hmann.pos.integration.external.InventorySystem;
 import me.hmann.pos.model.dto.ItemDescription;
 
 import java.text.DecimalFormat;
@@ -33,32 +32,30 @@ public class PosView {
 	private void presentSaleStatus(ItemDescription latestItem) {
 		if(latestItem != null) {
 			System.out.println("\"" + latestItem.getName() + "\" - " + formatMoney(latestItem.getPriceWithVAT()) + " kr (VAT " + latestItem.getTaxRate() + ")");
+			System.out.println("Running total: " + formatMoney(controller.getCurrentRunningTotal()) + " kr");
 		}
-
-		System.out.println("Running total: " + formatMoney(controller.getCurrentRunningTotal()) + " kr");
+		else {
+			System.out.println("Total price: " + formatMoney(controller.getCurrentRunningTotal()) + " kr");
+		}
 	}
 
 	/**
 	 * Runs the point-of-sale system by simulating a cashier, with a command line interface.
 	 */
 	public void simulateCashier() {
-		/* The view shouldn't be using classes from the integration layer, but this is only to make testing easier. */
-		System.out.print("Available items -");
-		for(String item : InventorySystem.AVAILABLE_ITEMS.keySet()) {
-			System.out.print(" " + item);
-		}
-		System.out.println();
+		System.out.println("Available items - SAUSG MEATB POTAT BROCO BREAD TOAST TORTL COLA3 COLA5 COLA1");
+		System.out.println("Customers with discounts - 3581 8536 9977 1210");
 		System.out.println();
 
 		controller.startSale();
-		System.out.println("New sale started");
+		System.out.println("Sale started");
 
 		/* Used to read lines from System.in */
 		Scanner scanner = new Scanner(System.in);
 
 		boolean itemsLeft = true;
 		while(itemsLeft) {
-			System.out.print("Enter the next item, or nothing if all goods recorded: ");
+			System.out.print("Enter the next item, or nothing to end sale: ");
 			String itemId = scanner.nextLine().toUpperCase().trim();
 
 			if(itemId.equals("")) {
@@ -82,17 +79,17 @@ public class PosView {
 
 		controller.endSale();
 
-		System.out.println("Sale ended");
+		System.out.println("Sale finished");
 		presentSaleStatus(null);
 		System.out.println();
 
 		System.out.print("Does the customer want to apply discounts (Y/N)? ");
 		if(scanner.nextLine().trim().equalsIgnoreCase("Y")) {
 			System.out.print("Enter customer ID: ");
-			String customerId = scanner.nextLine().toUpperCase().trim();
+			int customerId = Integer.parseInt(scanner.nextLine().trim());
 
-			controller.applyCustomerDiscounts(customerId);
-			System.out.println("" + controller.getAppliedDiscounts().size() + " discount(s) applied to sale.");
+			int discounts = controller.applyCustomerDiscounts(customerId);
+			System.out.println("" + discounts + " discount(s) applied to sale.");
 			System.out.println();
 
 			presentSaleStatus(null);

@@ -47,6 +47,15 @@ public class SaleDescription {
 			total += itemDesc.getPriceWithVAT() * entry.getValue();
 		}
 
+		for(Discount discount : discounts) {
+			total -= discount.getPriceReduction(systems, this);
+		}
+
+		/* The customer can't get money back from discounts */
+		if(total < 0) {
+			total = 0;
+		}
+
 		return total;
 	}
 }

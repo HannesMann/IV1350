@@ -69,18 +69,12 @@ public class PosController {
 	}
 
 	/**
-	 * @return The discounts applied to the current sale.
-	 */
-	public List<Discount> getAppliedDiscounts() {
-		return sale.getDescription().getAppliedDiscounts();
-	}
-
-	/**
 	 * Applies any available discounts to the finished sale.
 	 * @param customerId The customer making the purchase.
+	 * @return The amount of discounts that were applied, this is >= 0.
 	 */
-	public void applyCustomerDiscounts(String customerId) {
-		sale.applyDiscounts(customerId);
+	public int applyCustomerDiscounts(int customerId) {
+		return sale.applyDiscounts(integrationSystems, customerId);
 	}
 
 	/**

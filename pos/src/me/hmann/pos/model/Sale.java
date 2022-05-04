@@ -25,11 +25,23 @@ public class Sale {
 
 	/***
 	 * Fetches discounts from the database and applies them to the purchase.
+	 * @param systems External systems needed to fetch discounts.
 	 * @param customerId The customer identifier as entered by the cashier.
 	 * @return The amount of discounts that were applied, this is >= 0.
 	 */
-	public int applyDiscounts(String customerId) {
-		return 0;
+	public int applyDiscounts(IntegrationSystems systems, int customerId) {
+		SaleDescription descriptionOfCurrentSale = getDescription();
+		Discount[] potentialDiscounts = systems.getDiscountRegistry().getDiscountsForCustomer(customerId);
+
+		int applied = 0;
+		for(Discount discount : potentialDiscounts) {
+			if(discount.doesDiscountApply(systems, descriptionOfCurrentSale)) {
+				discounts.add(discount);
+				applied++;
+			}
+		}
+
+		return applied;
 	}
 
 	/***
@@ -43,7 +55,7 @@ public class Sale {
 	/**
 	 * @return A description of this sale.
 	 */
-	public SaleDescription getDescription() {
+	private SaleDescription getDescription() {
 		return new SaleDescription(items, discounts);
 	}
 

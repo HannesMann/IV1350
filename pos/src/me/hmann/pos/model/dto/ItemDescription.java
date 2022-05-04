@@ -4,7 +4,6 @@ package me.hmann.pos.model.dto;
  * Defines properties of an item.
  */
 public class ItemDescription {
-	private String id;
 	private String name;
 
 	private double price;
@@ -12,24 +11,15 @@ public class ItemDescription {
 
 	/**
 	 * Create a new item description.
-	 * @param id The internal ID of the item.
 	 * @param name The name of the item.
 	 * @param price The price of the item.
 	 * @param taxRate The tax rate/VAT applied to the item at checkout.
 	 */
-	public ItemDescription(String id, String name, double price, TaxRate taxRate) {
-		this.id = id;
+	public ItemDescription(String name, double price, TaxRate taxRate) {
 		this.name = name;
 
 		this.price = price;
 		this.taxRate = taxRate;
-	}
-
-	/**
-	 * @return The internal ID of the item.
-	 */
-	public String getId() {
-		return id;
 	}
 
 	/**
