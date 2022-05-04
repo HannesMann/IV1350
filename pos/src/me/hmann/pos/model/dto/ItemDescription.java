@@ -8,7 +8,7 @@ public class ItemDescription {
 	private String name;
 
 	private double price;
-	private double taxRate;
+	private TaxRate taxRate;
 
 	/**
 	 * Create a new item description.
@@ -17,7 +17,7 @@ public class ItemDescription {
 	 * @param price The price of the item.
 	 * @param taxRate The tax rate/VAT applied to the item at checkout.
 	 */
-	public ItemDescription(String id, String name, double price, double taxRate) {
+	public ItemDescription(String id, String name, double price, TaxRate taxRate) {
 		this.id = id;
 		this.name = name;
 
@@ -50,13 +50,13 @@ public class ItemDescription {
 	 * @return The price of the item with VAT applied.
 	 */
 	public double getPriceWithVAT() {
-		return price + (price * taxRate);
+		return price + (price * taxRate.toPercent());
 	}
 
 	/**
 	 * @return The tax rate/VAT that should be applied at checkout to this item.
 	 */
-	public double getTaxRate() {
+	public TaxRate getTaxRate() {
 		return taxRate;
 	}
 }

@@ -1,5 +1,6 @@
 package me.hmann.pos.model;
 
+import me.hmann.pos.integration.IntegrationSystems;
 import me.hmann.pos.model.dto.ItemDescription;
 
 import java.util.HashMap;
@@ -20,12 +21,24 @@ public class OngoingSale {
 
 	/***
 	 * Records one or more of the same item with the specified id in the sale.
+	 * @param systems External systems needed to record item.
 	 * @param itemId The item identifier.
 	 * @param quantity The quantity entered by the cashier. This must be >= 1.
 	 * @return The item description from the external inventory system, or null if no such item exists.
 	 */
-	public ItemDescription recordItem(String itemId, int quantity) {
-		return null;
+	public ItemDescription recordItem(IntegrationSystems systems, String itemId, int quantity) {
+		ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(itemId);
+
+		if(itemDesc != null) {
+			if(items.containsKey(itemId)) {
+				items.replace(itemId, items.get(itemId) + quantity);
+			}
+			else {
+				items.put(itemId, quantity);
+			}
+		}
+
+		return itemDesc;
 	}
 
 	/***

@@ -53,7 +53,7 @@ public class PosController {
 	 * @return A description of the item.
 	 */
 	public ItemDescription recordItem(String itemId, int quantity) {
-		return ongoingSale.recordItem(itemId, quantity);
+		return ongoingSale.recordItem(integrationSystems, itemId, quantity);
 	}
 
 	/**
