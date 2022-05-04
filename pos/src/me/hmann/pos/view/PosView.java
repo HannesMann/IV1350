@@ -5,7 +5,18 @@ import java.util.Random;
 
 public class PosView {
 	private PosController controller;
+	/* This random generator will be used as the source for the decisions made during a simulation of the program. */
+	private Random decisionMaker;
 
 	public PosView(PosController controller) {
+		this.controller = controller;
+		this.decisionMaker = new Random();
+	}
+
+	/**
+	 * Runs the point-of-sale system by simulating a cashier, making random decisions each time.
+	 */
+	public void simulateCashier() {
+		controller.startSale();
 	}
 }

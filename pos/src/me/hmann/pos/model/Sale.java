@@ -15,7 +15,7 @@ import java.util.Map;
 public class Sale {
 	private SaleDescription saleDescription;
 
-	Sale(Map<ItemDescription, Integer> items) {
+	Sale(Map<String, Integer> items) {
 
 	}
 

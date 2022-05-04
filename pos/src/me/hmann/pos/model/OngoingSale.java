@@ -9,7 +9,7 @@ import java.util.HashMap;
  * Once the sale is complete, a purchase can be made by calling @{link completeSale}.
  */
 public class OngoingSale {
-	private HashMap<ItemDescription, Integer> items;
+	private HashMap<String, Integer> items;
 
 	/***
 	 * Records one or more of the same item with the specified id in the sale.

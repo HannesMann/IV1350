@@ -5,14 +5,14 @@ import me.hmann.pos.model.Discount;
 import java.util.*;
 
 public class SaleDescription {
-	private SortedMap<ItemDescription, Integer> items;
+	private SortedMap<String, Integer> items;
 	private ArrayList<Discount> discounts;
 
-	SaleDescription(Map<ItemDescription, Integer> items, List<Discount> discounts) {
+	SaleDescription(Map<String, Integer> items, List<Discount> discounts) {
 
 	}
 
-	public Map<ItemDescription, Integer> getItems() {
+	public Map<String, Integer> getItems() {
 		return items;
 	}
 	public List<Discount> getAppliedDiscounts() {

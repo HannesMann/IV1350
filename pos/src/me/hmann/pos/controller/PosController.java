@@ -24,6 +24,7 @@ public class PosController {
 	 * If a sale is already ongoing, this function will fail.
 	 */
 	public void startSale() {
+		/* TODO: Throw exception if sale is ongoing! */
 		sale = null;
 		ongoingSale = new OngoingSale();
 	}
@@ -33,6 +34,7 @@ public class PosController {
 	 * If a sale has not started, this function will fail.
 	 */
 	public void endSale() {
+		/* TODO: Throw exception if sale is not ongoing! */
 		sale = ongoingSale.completeSale();
 		ongoingSale = null;
 	}

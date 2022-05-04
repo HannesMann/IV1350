@@ -12,5 +12,7 @@ public class Startup {
 		IntegrationSystems systems = new IntegrationSystems();
 		PosController controller = new PosController(systems);
 		PosView view = new PosView(controller);
+
+		view.simulateCashier();
     }
 }
