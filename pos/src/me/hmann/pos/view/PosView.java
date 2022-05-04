@@ -4,7 +4,6 @@ import me.hmann.pos.controller.PosController;
 import me.hmann.pos.model.dto.ItemDescription;
 
 import java.text.DecimalFormat;
-import java.util.Random;
 import java.util.Scanner;
 
 /**

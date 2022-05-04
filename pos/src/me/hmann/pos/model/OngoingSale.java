@@ -6,7 +6,6 @@ import me.hmann.pos.model.dto.SaleDescription;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 /***
  * Responsible for storing details about an ongoing purchase.

@@ -3,7 +3,8 @@ package me.hmann.pos.model.dto;
 import me.hmann.pos.integration.IntegrationSystems;
 import me.hmann.pos.model.Discount;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Describes a sale to the customer.

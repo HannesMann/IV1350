@@ -1,10 +1,11 @@
 package me.hmann.pos.model;
 
 import me.hmann.pos.integration.IntegrationSystems;
-import me.hmann.pos.model.dto.ItemDescription;
 import me.hmann.pos.model.dto.SaleDescription;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 /***
  * Responsible for storing details about a completed customer purchase.
