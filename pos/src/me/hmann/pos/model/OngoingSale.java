@@ -18,7 +18,7 @@ public class OngoingSale {
 	 * Start a new sale.
 	 */
 	public OngoingSale() {
-		items = new HashMap<String, Integer>();
+		items = new HashMap<>();
 	}
 
 	/***
@@ -48,7 +48,7 @@ public class OngoingSale {
 	 * @return The current running total of the sale, including VAT (taxes).
 	 */
 	public double getRunningTotal(IntegrationSystems systems) {
-		return new SaleDescription(items, new ArrayList<Discount>()).getTotalPrice(systems);
+		return new SaleDescription(items, new ArrayList<>()).getTotalPrice(systems);
 	}
 
 	/***

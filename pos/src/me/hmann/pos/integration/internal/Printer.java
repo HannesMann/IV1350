@@ -13,7 +13,7 @@ public class Printer {
 	 * Starts printing a new receipt.
 	 */
 	public void startPrint() {
-		printedLines = new ArrayList<String>();
+		printedLines = new ArrayList<>();
 	}
 
 	/***

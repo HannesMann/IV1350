@@ -20,8 +20,8 @@ public class Sale {
 	 * @param items Items the customer has bought.
 	 */
 	Sale(Map<String, Integer> items) {
-		this.items = new TreeMap<String, Integer>(items);
-		this.discounts = new ArrayList<Discount>();
+		this.items = new TreeMap<>(items);
+		this.discounts = new ArrayList<>();
 	}
 
 	/***
@@ -72,6 +72,14 @@ public class Sale {
 	 * @return A receipt for the sale.
 	 */
 	public Receipt payAndPrintReceipt(double amountPaid, IntegrationSystems externalSystems) {
+		SaleDescription saleDesc = getDescription();
+
+		externalSystems.getSaleLog().logSale(saleDesc);
+		externalSystems.getAccountingSystem().logSale(saleDesc);
+		externalSystems.getInventorySystem().logSale(saleDesc);
+
+		externalSystems.getCashRegister().depositCash(amountPaid);
+
 		Receipt receipt = new Receipt(getDescription(), amountPaid);
 		receipt.print(externalSystems);
 		return receipt;

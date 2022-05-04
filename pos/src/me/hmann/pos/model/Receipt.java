@@ -22,7 +22,7 @@ public class Receipt {
 	/**
 	 * Create a receipt from a sale.
 	 * @param description Description of the sale.
-	 * @param amountPaid The amount the customer paid (not necessarily the same as the total price.
+	 * @param amountPaid The amount the customer paid (not necessarily the same as the total price).
 	 */
 	Receipt(SaleDescription description, double amountPaid) {
 		this.saleDescription = description;
@@ -75,7 +75,7 @@ public class Receipt {
 		printer.printLine("OPEN ALL DAYS 8-22");
 		printer.printLine("");
 
-		/* Nanoseconds is too much precision */
+		/* Nanoseconds are too much precision */
 		String dateString = DateTimeFormatter.ISO_LOCAL_DATE.format(dateAndTime.withNano(0));
 		dateString += " ";
 		dateString += DateTimeFormatter.ISO_LOCAL_TIME.format(dateAndTime.withNano(0));

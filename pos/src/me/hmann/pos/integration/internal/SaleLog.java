@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Responsible for logging sales in the point-of-sale (POS) system.
  */
 public class SaleLog {
-	private ArrayList<SaleDescription> loggedSales = new ArrayList<SaleDescription>();
+	private ArrayList<SaleDescription> loggedSales = new ArrayList<>();
 
 	/**
 	 * Log a completed sale to the internal sale log.

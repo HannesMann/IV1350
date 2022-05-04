@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * External accounting system.
  */
 public class AccountingSystem {
-	private ArrayList<SaleDescription> loggedSales = new ArrayList<SaleDescription>();
+	private ArrayList<SaleDescription> loggedSales = new ArrayList<>();
 
 	/**
 	 * Log a completed sale to the accounting system.

@@ -11,7 +11,7 @@ import java.util.HashMap;
  * Keeps track of items in the store, their price, tax rate, etc.
  */
 public class InventorySystem {
-	private ArrayList<SaleDescription> loggedSales = new ArrayList<SaleDescription>();
+	private ArrayList<SaleDescription> loggedSales = new ArrayList<>();
 
 	/**
 	 * Used in the seminar for some example items. This would be fetched from a database in a real application.
