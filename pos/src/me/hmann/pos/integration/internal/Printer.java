@@ -23,7 +23,7 @@ public class Printer {
 	public void finishPrint() {
 		/* This would normally go to the printer, but we show it on the command line */
 		for(String line : printedLines) {
-			System.out.println(line);
+			System.out.println("  " + line);
 		}
 	}
 
