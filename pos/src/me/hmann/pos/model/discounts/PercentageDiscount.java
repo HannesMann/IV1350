@@ -50,6 +50,5 @@ public class PercentageDiscount implements Discount {
 		}
 
 		return priceReduction;
-
 	}
 }
