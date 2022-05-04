@@ -15,6 +15,10 @@ public class PosController {
 
 	private IntegrationSystems integrationSystems;
 
+	/**
+	 * Create new POS controller.
+	 * @param integrationSystems External and internal systems used by the controller.
+	 */
 	public PosController(IntegrationSystems integrationSystems) {
 		this.integrationSystems = integrationSystems;
 	}
@@ -39,10 +43,19 @@ public class PosController {
 		ongoingSale = null;
 	}
 
+	/**
+	 * Used by the cashier to add an item to an ongoing sale.
+	 * @param itemId The internal ID of the item.
+	 * @param quantity The quantity of the specified item.
+	 * @return A description of the item.
+	 */
 	public ItemDescription recordItem(String itemId, int quantity) {
 		return ongoingSale.recordItem(itemId, quantity);
 	}
 
+	/**
+	 * @return The current running total of either the ongoing or completed sale.
+	 */
 	public double getCurrentRunningTotal() {
 		if(ongoingSale != null) {
 			return ongoingSale.getRunningTotal();
@@ -52,10 +65,19 @@ public class PosController {
 		}
 	}
 
+	/**
+	 * Applies any available discounts to the finished sale.
+	 * @param customerId The customer making the purchase.
+	 */
 	public void applyCustomerDiscounts(String customerId) {
-
+		sale.applyDiscounts(customerId);
 	}
 
+	/**
+	 * Indicate that the sale is finished and the customer has paid for their items.
+	 * @param amount The amount the customer paid.
+	 * @return The change to give back to the customer.
+	 */
 	public double payAndPrintReceipt(double amount) {
 		return sale.payAndPrintReceipt(amount, integrationSystems).getChange();
 	}

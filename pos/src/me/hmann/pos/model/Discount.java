@@ -25,7 +25,7 @@ public interface Discount {
 	 * Applies this discount to a sale.
 	 * @param systems External integration systems for looking up name, price, etc.
 	 * @param sale The description of a purchase made by the customer.
-	 * @return The amount of price reduction for the sale, this must be >= 0.
+	 * @return The amount of price reduction for the sale (this includes VAT), this must be >= 0.
 	 */
 	public double getPriceReduction(IntegrationSystems systems, SaleDescription sale);
 }

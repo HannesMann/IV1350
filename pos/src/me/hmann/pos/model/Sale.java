@@ -15,8 +15,12 @@ import java.util.Map;
 public class Sale {
 	private SaleDescription saleDescription;
 
+	/**
+	 * Create sale from ongoing sale.
+	 * @param items Items the customer has bought.
+	 */
 	Sale(Map<String, Integer> items) {
-
+		saleDescription = new SaleDescription(items, new ArrayList<Discount>());
 	}
 
 	/***

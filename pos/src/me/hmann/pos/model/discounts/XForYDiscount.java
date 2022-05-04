@@ -5,7 +5,7 @@ import me.hmann.pos.model.Discount;
 import me.hmann.pos.model.dto.ItemDescription;
 import me.hmann.pos.model.dto.SaleDescription;
 
-/***
+/**
  * This discount type will reduce the price if a specific number of items are bought.
  */
 public class XForYDiscount implements Discount {
@@ -43,6 +43,7 @@ public class XForYDiscount implements Discount {
 		if(sale.getItems().containsKey(itemId)) {
 			ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(itemId);
 			double reductionAmount = itemsToBuy * itemDesc.getPrice() - itemsToPayFor * itemDesc.getPrice();
+			reductionAmount += reductionAmount * itemDesc.getTaxRate();
 
 			int itemsLeft = sale.getItems().get(itemId);
 			/* Apply price reduction recursively. */

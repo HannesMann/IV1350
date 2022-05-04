@@ -14,7 +14,7 @@ public class Printer {
 
 	/***
 	 * Finishes printing the receipt.
-	 * The receipt will contain all lines written since {@link Printer.startPrint} was called.
+	 * The receipt will contain all lines written since Printer.startPrint was called.
 	 */
 	public void finishPrint() {
 
