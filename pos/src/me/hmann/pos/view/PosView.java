@@ -4,6 +4,7 @@ import me.hmann.pos.controller.PosController;
 import me.hmann.pos.integration.external.InventorySystem;
 import me.hmann.pos.model.dto.ItemDescription;
 
+import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -21,12 +22,20 @@ public class PosView {
 		this.controller = controller;
 	}
 
+	private String formatMoney(double amount) {
+		DecimalFormat df = new DecimalFormat();
+		df.setGroupingUsed(false);
+		df.setMaximumFractionDigits(2);
+
+		return df.format(amount);
+	}
+
 	private void presentSaleStatus(ItemDescription latestItem) {
 		if(latestItem != null) {
-			System.out.println(latestItem.getName() + " - " + latestItem.getPriceWithVAT() + " kr (VAT " + latestItem.getTaxRate() + ")");
+			System.out.println("\"" + latestItem.getName() + "\" - " + formatMoney(latestItem.getPriceWithVAT()) + " kr (VAT " + latestItem.getTaxRate() + ")");
 		}
 
-		System.out.println("Running total: " + controller.getCurrentRunningTotal() + " kr");
+		System.out.println("Running total: " + formatMoney(controller.getCurrentRunningTotal()) + " kr");
 	}
 
 	/**
@@ -99,6 +108,6 @@ public class PosView {
 		double change = controller.payAndPrintReceipt(customerPayment);
 		System.out.println();
 
-		System.out.println("Change to give back to customer: " + change + " kr");
+		System.out.println("Change to give back to customer: " + formatMoney(change) + " kr");
 	}
 }

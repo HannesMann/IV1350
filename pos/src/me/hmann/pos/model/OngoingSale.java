@@ -2,8 +2,11 @@ package me.hmann.pos.model;
 
 import me.hmann.pos.integration.IntegrationSystems;
 import me.hmann.pos.model.dto.ItemDescription;
+import me.hmann.pos.model.dto.SaleDescription;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 /***
  * Responsible for storing details about an ongoing purchase.
@@ -42,10 +45,11 @@ public class OngoingSale {
 	}
 
 	/***
+	 * @param systems External systems needed to retrieve price.
 	 * @return The current running total of the sale, including VAT (taxes).
 	 */
-	public double getRunningTotal() {
-		return 0;
+	public double getRunningTotal(IntegrationSystems systems) {
+		return new SaleDescription(items, new ArrayList<Discount>()).getTotalPrice(systems);
 	}
 
 	/***

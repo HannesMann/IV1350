@@ -1,5 +1,6 @@
 package me.hmann.pos.model.dto;
 
+import me.hmann.pos.integration.IntegrationSystems;
 import me.hmann.pos.model.Discount;
 
 import java.util.*;
@@ -35,9 +36,17 @@ public class SaleDescription {
 	}
 
 	/**
+	 * @param systems External systems needed to retrieve price.
 	 * @return The total price for the sale.
 	 */
-	public double getTotalPrice() {
-		return 0;
+	public double getTotalPrice(IntegrationSystems systems) {
+		double total = 0;
+
+		for(Map.Entry<String, Integer> entry : items.entrySet()) {
+			ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(entry.getKey());
+			total += itemDesc.getPriceWithVAT() * entry.getValue();
+		}
+
+		return total;
 	}
 }

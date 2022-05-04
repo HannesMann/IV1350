@@ -33,10 +33,11 @@ public class Sale {
 	}
 
 	/***
+	 * @param systems External systems needed to retrieve price.
 	 * @return The current total price of the sale, including VAT (taxes) and discounts.
 	 */
-	public double getTotalPrice() {
-		return getDescription().getTotalPrice();
+	public double getTotalPrice(IntegrationSystems systems) {
+		return getDescription().getTotalPrice(systems);
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class Sale {
 	 */
 	public Receipt payAndPrintReceipt(double amountPaid, IntegrationSystems externalSystems) {
 		Receipt receipt = new Receipt(getDescription(), amountPaid);
-		receipt.print(externalSystems.getPrinter());
+		receipt.print(externalSystems);
 		return receipt;
 	}
 }

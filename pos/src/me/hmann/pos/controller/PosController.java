@@ -61,10 +61,10 @@ public class PosController {
 	 */
 	public double getCurrentRunningTotal() {
 		if(ongoingSale != null) {
-			return ongoingSale.getRunningTotal();
+			return ongoingSale.getRunningTotal(integrationSystems);
 		}
 		else {
-			return sale.getTotalPrice();
+			return sale.getTotalPrice(integrationSystems);
 		}
 	}
 
@@ -89,6 +89,6 @@ public class PosController {
 	 * @return The change to give back to the customer.
 	 */
 	public double payAndPrintReceipt(double amount) {
-		return sale.payAndPrintReceipt(amount, integrationSystems).getChange();
+		return sale.payAndPrintReceipt(amount, integrationSystems).getChange(integrationSystems);
 	}
 }

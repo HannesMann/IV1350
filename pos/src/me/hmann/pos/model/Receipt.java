@@ -1,5 +1,6 @@
 package me.hmann.pos.model;
 
+import me.hmann.pos.integration.IntegrationSystems;
 import me.hmann.pos.integration.internal.Printer;
 import me.hmann.pos.model.dto.SaleDescription;
 
@@ -46,17 +47,19 @@ public class Receipt {
 		return amountPaid;
 	}
 	/**
+	 * @param systems External systems needed to retrieve price.
 	 * @return The amount the customer should get back.
 	 */
-	public double getChange() {
-		return amountPaid - saleDescription.getTotalPrice();
+	public double getChange(IntegrationSystems systems) {
+		return amountPaid - saleDescription.getTotalPrice(systems);
 	}
 
 	/***
 	 * Prints this receipt to a printer.
-	 * @param printer The printer to print on.
+	 * @param systems External systems needed to retrieve item information and printer.
 	 */
-	public void print(Printer printer) {
+	public void print(IntegrationSystems systems) {
+		Printer printer = systems.getPrinter();
 		printer.startPrint();
 		printer.printLine("BLA BLA BLA");
 		printer.finishPrint();
