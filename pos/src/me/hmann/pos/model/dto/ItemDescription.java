@@ -47,6 +47,13 @@ public class ItemDescription {
 	}
 
 	/**
+	 * @return The price of the item with VAT applied.
+	 */
+	public double getPriceWithVAT() {
+		return price + (price * taxRate);
+	}
+
+	/**
 	 * @return The tax rate/VAT that should be applied at checkout to this item.
 	 */
 	public double getTaxRate() {

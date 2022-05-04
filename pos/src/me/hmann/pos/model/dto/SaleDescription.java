@@ -8,8 +8,8 @@ import java.util.*;
  * Describes a sale to the customer.
  */
 public class SaleDescription {
-	private SortedMap<String, Integer> items;
-	private ArrayList<Discount> discounts;
+	private Map<String, Integer> items;
+	private List<Discount> discounts;
 
 	/**
 	 * Create new sale description.
@@ -17,7 +17,8 @@ public class SaleDescription {
 	 * @param discounts The discounts applied to the sale.
 	 */
 	public SaleDescription(Map<String, Integer> items, List<Discount> discounts) {
-
+		this.items = items;
+		this.discounts = discounts;
 	}
 
 	/**

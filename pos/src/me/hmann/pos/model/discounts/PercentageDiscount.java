@@ -39,8 +39,7 @@ public class PercentageDiscount implements Discount {
 
 		if(sale.getItems().containsKey(itemId)) {
 			ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(itemId);
-			double reductionAmount = itemDesc.getPrice() * discountAmount;
-			reductionAmount += reductionAmount * itemDesc.getTaxRate();
+			double reductionAmount = itemDesc.getPriceWithVAT() * discountAmount;
 
 			int itemsLeft = sale.getItems().get(itemId);
 			/* Apply price reduction recursively. */

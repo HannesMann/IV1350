@@ -42,8 +42,7 @@ public class XForYDiscount implements Discount {
 
 		if(sale.getItems().containsKey(itemId)) {
 			ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(itemId);
-			double reductionAmount = itemsToBuy * itemDesc.getPrice() - itemsToPayFor * itemDesc.getPrice();
-			reductionAmount += reductionAmount * itemDesc.getTaxRate();
+			double reductionAmount = itemsToBuy * itemDesc.getPriceWithVAT() - itemsToPayFor * itemDesc.getPriceWithVAT();
 
 			int itemsLeft = sale.getItems().get(itemId);
 			/* Apply price reduction recursively. */

@@ -4,23 +4,23 @@ import me.hmann.pos.integration.IntegrationSystems;
 import me.hmann.pos.model.dto.ItemDescription;
 import me.hmann.pos.model.dto.SaleDescription;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /***
  * Responsible for storing details about a completed customer purchase.
  * Discounts may be applied, but no more items can be added.
  */
 public class Sale {
-	private SaleDescription saleDescription;
+	private TreeMap<String, Integer> items;
+	private ArrayList<Discount> discounts;
 
 	/**
 	 * Create sale from ongoing sale.
 	 * @param items Items the customer has bought.
 	 */
 	Sale(Map<String, Integer> items) {
-		saleDescription = new SaleDescription(items, new ArrayList<Discount>());
+		this.items = new TreeMap<String, Integer>(items);
+		this.discounts = new ArrayList<Discount>();
 	}
 
 	/***
@@ -36,7 +36,14 @@ public class Sale {
 	 * @return The current total price of the sale, including VAT (taxes) and discounts.
 	 */
 	public double getTotalPrice() {
-		return saleDescription.getTotalPrice();
+		return getDescription().getTotalPrice();
+	}
+
+	/**
+	 * @return A description of this sale.
+	 */
+	public SaleDescription getDescription() {
+		return new SaleDescription(items, discounts);
 	}
 
 	/***
@@ -51,7 +58,7 @@ public class Sale {
 	 * @return A receipt for the sale.
 	 */
 	public Receipt payAndPrintReceipt(double amountPaid, IntegrationSystems externalSystems) {
-		Receipt receipt = new Receipt(saleDescription, amountPaid);
+		Receipt receipt = new Receipt(getDescription(), amountPaid);
 		receipt.print(externalSystems.getPrinter());
 		return receipt;
 	}

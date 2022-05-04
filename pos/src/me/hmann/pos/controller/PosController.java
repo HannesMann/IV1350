@@ -1,10 +1,13 @@
 package me.hmann.pos.controller;
 
 import me.hmann.pos.integration.IntegrationSystems;
+import me.hmann.pos.model.Discount;
 import me.hmann.pos.model.OngoingSale;
 import me.hmann.pos.model.Receipt;
 import me.hmann.pos.model.Sale;
 import me.hmann.pos.model.dto.ItemDescription;
+
+import java.util.List;
 
 /***
  * A controller for a complete point-of-sale (POS) system.
@@ -63,6 +66,13 @@ public class PosController {
 		else {
 			return sale.getTotalPrice();
 		}
+	}
+
+	/**
+	 * @return The discounts applied to the current sale.
+	 */
+	public List<Discount> getAppliedDiscounts() {
+		return sale.getDescription().getAppliedDiscounts();
 	}
 
 	/**

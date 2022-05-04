@@ -11,6 +11,13 @@ import java.util.HashMap;
 public class OngoingSale {
 	private HashMap<String, Integer> items;
 
+	/**
+	 * Start a new sale.
+	 */
+	public OngoingSale() {
+		items = new HashMap<String, Integer>();
+	}
+
 	/***
 	 * Records one or more of the same item with the specified id in the sale.
 	 * @param itemId The item identifier.
