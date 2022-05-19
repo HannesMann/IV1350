@@ -1,2 +1,2 @@
-# IV1350-seminar3
-Seminar 3 tasks for IV1350
+# IV1350
+Seminar 3 and 4 tasks for IV1350

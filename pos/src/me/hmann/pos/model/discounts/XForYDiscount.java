@@ -1,6 +1,7 @@
 package me.hmann.pos.model.discounts;
 
 import me.hmann.pos.integration.IntegrationSystems;
+import me.hmann.pos.integration.exceptions.ItemNotFoundException;
 import me.hmann.pos.model.Discount;
 import me.hmann.pos.model.dto.ItemDescription;
 import me.hmann.pos.model.dto.SaleDescription;
@@ -27,7 +28,14 @@ public class XForYDiscount implements Discount {
 
 	@Override
 	public String getDescription(IntegrationSystems systems) {
-		ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(itemId);
+		ItemDescription itemDesc = null;
+
+		try {
+			itemDesc = systems.getInventorySystem().getItemDescription(itemId);
+		} catch (ItemNotFoundException e) {
+			throw new IllegalArgumentException(e);
+		}
+
 		return "Buy " + itemsToBuy + " " + itemDesc.getName() + ", Pay For " + itemsToPayFor;
 	}
 
@@ -41,7 +49,14 @@ public class XForYDiscount implements Discount {
 		double priceReduction = 0;
 
 		if(sale.getItems().containsKey(itemId)) {
-			ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(itemId);
+			ItemDescription itemDesc = null;
+
+			try {
+				itemDesc = systems.getInventorySystem().getItemDescription(itemId);
+			} catch (ItemNotFoundException e) {
+				throw new IllegalArgumentException(e);
+			}
+
 			double reductionAmount = itemsToBuy * itemDesc.getPriceWithVAT() - itemsToPayFor * itemDesc.getPriceWithVAT();
 
 			int itemsLeft = sale.getItems().get(itemId);

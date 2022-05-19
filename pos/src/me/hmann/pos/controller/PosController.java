@@ -1,6 +1,7 @@
 package me.hmann.pos.controller;
 
 import me.hmann.pos.integration.IntegrationSystems;
+import me.hmann.pos.integration.exceptions.ItemNotFoundException;
 import me.hmann.pos.model.OngoingSale;
 import me.hmann.pos.model.Sale;
 import me.hmann.pos.model.dto.ItemDescription;
@@ -27,7 +28,10 @@ public class PosController {
 	 * If a sale is already ongoing, this function will fail.
 	 */
 	public void startSale() {
-		/* TODO: Throw exception if sale is ongoing! */
+		if(ongoingSale != null) {
+			throw new IllegalStateException("Cannot start a new sale while an ongoing sale exists.");
+		}
+
 		sale = null;
 		ongoingSale = new OngoingSale();
 	}
@@ -37,7 +41,10 @@ public class PosController {
 	 * If a sale has not started, this function will fail.
 	 */
 	public void endSale() {
-		/* TODO: Throw exception if sale is not ongoing! */
+		if(ongoingSale == null) {
+			throw new IllegalStateException("No ongoing sale exists that can be ended with endSale().");
+		}
+
 		sale = ongoingSale.completeSale();
 		ongoingSale = null;
 	}
@@ -48,7 +55,7 @@ public class PosController {
 	 * @param quantity The quantity of the specified item.
 	 * @return A description of the item.
 	 */
-	public ItemDescription recordItem(String itemId, int quantity) {
+	public ItemDescription recordItem(String itemId, int quantity) throws ItemNotFoundException {
 		return ongoingSale.recordItem(integrationSystems, itemId, quantity);
 	}
 

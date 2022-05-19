@@ -1,6 +1,7 @@
 package me.hmann.pos.model.dto;
 
 import me.hmann.pos.integration.IntegrationSystems;
+import me.hmann.pos.integration.exceptions.ItemNotFoundException;
 import me.hmann.pos.model.Discount;
 
 import java.util.List;
@@ -44,7 +45,14 @@ public class SaleDescription {
 		double total = 0;
 
 		for(Map.Entry<String, Integer> entry : items.entrySet()) {
-			ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(entry.getKey());
+			ItemDescription itemDesc = null;
+
+			try {
+				itemDesc = systems.getInventorySystem().getItemDescription(entry.getKey());
+			} catch (ItemNotFoundException e) {
+				throw new IllegalStateException(e);
+			}
+
 			total += itemDesc.getPriceWithVAT() * entry.getValue();
 		}
 

@@ -1,6 +1,7 @@
 package me.hmann.pos.view;
 
 import me.hmann.pos.controller.PosController;
+import me.hmann.pos.integration.exceptions.ItemNotFoundException;
 import me.hmann.pos.model.dto.ItemDescription;
 
 import java.text.DecimalFormat;
@@ -63,13 +64,12 @@ public class PosView {
 			else {
 				System.out.print("Item " + itemId + ", enter quantity: ");
 				int quantity = Integer.parseInt(scanner.nextLine());
-				ItemDescription description = controller.recordItem(itemId, quantity);
 
-				if(description == null) {
-					System.out.println("No such item exists!");
+				try {
+					presentSaleStatus(controller.recordItem(itemId, quantity));
 				}
-				else {
-					presentSaleStatus(description);
+				catch(ItemNotFoundException exception) {
+					System.out.println("An item with ID \"" + exception.getItemId() + "\" does not exist!");
 				}
 			}
 

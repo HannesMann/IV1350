@@ -1,6 +1,7 @@
 package me.hmann.pos.model;
 
 import me.hmann.pos.integration.IntegrationSystems;
+import me.hmann.pos.integration.exceptions.ItemNotFoundException;
 import me.hmann.pos.model.dto.ItemDescription;
 import me.hmann.pos.model.dto.SaleDescription;
 
@@ -23,12 +24,13 @@ public class OngoingSale {
 
 	/***
 	 * Records one or more of the same item with the specified id in the sale.
+	 * If an item with the specified ID doesn't exist an exception of type ItemNotFoundException is thrown.
 	 * @param systems External systems needed to record item.
 	 * @param itemId The item identifier.
 	 * @param quantity The quantity entered by the cashier. This must be >= 1.
-	 * @return The item description from the external inventory system, or null if no such item exists.
+	 * @return The item description from the external inventory system.
 	 */
-	public ItemDescription recordItem(IntegrationSystems systems, String itemId, int quantity) {
+	public ItemDescription recordItem(IntegrationSystems systems, String itemId, int quantity) throws ItemNotFoundException {
 		ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(itemId);
 
 		if(itemDesc != null) {

@@ -1,6 +1,7 @@
 package me.hmann.pos.model.discounts;
 
 import me.hmann.pos.integration.IntegrationSystems;
+import me.hmann.pos.integration.exceptions.ItemNotFoundException;
 import me.hmann.pos.model.Discount;
 import me.hmann.pos.model.dto.ItemDescription;
 import me.hmann.pos.model.dto.SaleDescription;
@@ -24,7 +25,14 @@ public class PercentageDiscount implements Discount {
 
 	@Override
 	public String getDescription(IntegrationSystems systems) {
-		ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(itemId);
+		ItemDescription itemDesc = null;
+
+		try {
+			itemDesc = systems.getInventorySystem().getItemDescription(itemId);
+		} catch (ItemNotFoundException e) {
+			throw new IllegalArgumentException(e);
+		}
+
 		return "-" + Math.round(discountAmount * 100) + "% " + itemDesc.getName();
 	}
 
@@ -38,7 +46,14 @@ public class PercentageDiscount implements Discount {
 		double priceReduction = 0;
 
 		if(sale.getItems().containsKey(itemId)) {
-			ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(itemId);
+			ItemDescription itemDesc = null;
+
+			try {
+				itemDesc = systems.getInventorySystem().getItemDescription(itemId);
+			} catch (ItemNotFoundException e) {
+				throw new IllegalArgumentException(e);
+			}
+
 			double reductionAmount = itemDesc.getPriceWithVAT() * discountAmount;
 
 			int itemsLeft = sale.getItems().get(itemId);

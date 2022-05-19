@@ -1,5 +1,6 @@
 package me.hmann.pos.integration.external;
 
+import me.hmann.pos.integration.exceptions.ItemNotFoundException;
 import me.hmann.pos.model.dto.ItemDescription;
 import me.hmann.pos.model.dto.SaleDescription;
 import me.hmann.pos.model.dto.TaxRate;
@@ -39,8 +40,12 @@ public class InventorySystem {
 	 * @param id The internal ID of the item.
 	 * @return The item description, or null.
 	 */
-	public ItemDescription getItemDescription(String id) {
-		return AVAILABLE_ITEMS.getOrDefault(id, null);
+	public ItemDescription getItemDescription(String id) throws ItemNotFoundException {
+		if(!AVAILABLE_ITEMS.containsKey(id)) {
+			throw new ItemNotFoundException(id);
+		}
+
+		return AVAILABLE_ITEMS.get(id);
 	}
 
 	/**

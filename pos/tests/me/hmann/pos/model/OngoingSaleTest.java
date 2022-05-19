@@ -1,6 +1,7 @@
 package me.hmann.pos.model;
 
 import me.hmann.pos.integration.IntegrationSystems;
+import me.hmann.pos.integration.exceptions.ItemNotFoundException;
 import me.hmann.pos.model.dto.ItemDescription;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +29,7 @@ class OngoingSaleTest {
 	}
 
 	@Test
-	void testRecordItemReturnValue() {
+	void testRecordItemReturnValue() throws ItemNotFoundException {
 		OngoingSale sale = new OngoingSale();
 		ItemDescription description = sale.recordItem(systems, "MEATB", 2);
 
@@ -39,7 +40,7 @@ class OngoingSaleTest {
 	}
 
 	@Test
-	void testRecordItemWithQuantity() {
+	void testRecordItemWithQuantity() throws ItemNotFoundException {
 		OngoingSale sale = new OngoingSale();
 		sale.recordItem(systems, "MEATB", 2);
 
@@ -50,7 +51,7 @@ class OngoingSaleTest {
 	}
 
 	@Test
-	void testRecordMultipleItems() {
+	void testRecordMultipleItems() throws ItemNotFoundException {
 		OngoingSale sale = new OngoingSale();
 		sale.recordItem(systems, "MEATB", 1);
 		sale.recordItem(systems, "MEATB", 1);
@@ -64,16 +65,17 @@ class OngoingSaleTest {
 	@Test
 	void testRecordInvalidItem() {
 		OngoingSale sale = new OngoingSale();
-		ItemDescription description = sale.recordItem(systems, "AAAAA", 1);
 
-		assertEquals(
-			description,
-			null,
-			"Adding invalid item does not work as expected");
+		/* An exception of type ItemNotFoundException is expected here. */
+		assertThrows(
+			ItemNotFoundException.class,
+			() -> { sale.recordItem(systems, "AAAAA", 1); },
+			"Adding invalid item did not throw exception"
+		);
 	}
 
 	@Test
-	void testRunningTotal() {
+	void testRunningTotal() throws ItemNotFoundException {
 		OngoingSale sale = new OngoingSale();
 		sale.recordItem(systems, "SAUSG", 100);
 

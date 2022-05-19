@@ -1,6 +1,7 @@
 package me.hmann.pos.model;
 
 import me.hmann.pos.integration.IntegrationSystems;
+import me.hmann.pos.integration.exceptions.ItemNotFoundException;
 import me.hmann.pos.integration.internal.Printer;
 import me.hmann.pos.model.dto.ItemDescription;
 import me.hmann.pos.model.dto.SaleDescription;
@@ -86,7 +87,14 @@ public class Receipt {
 		printer.printLine("Items");
 		printer.printLine("----------");
 		for(Entry<String, Integer> item : saleDescription.getItems().entrySet()) {
-			ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(item.getKey());
+			ItemDescription itemDesc = null;
+
+			try {
+				itemDesc = systems.getInventorySystem().getItemDescription(item.getKey());
+			} catch (ItemNotFoundException e) {
+				throw new IllegalStateException(e);
+			}
+
 			printer.printLine(itemDesc.getName() + " (" + item.getValue() + ") - " + df.format(itemDesc.getPriceWithVAT()) + " kr (VAT " + itemDesc.getTaxRate() + ")");
 		}
 		printer.printLine("----------");
@@ -107,7 +115,14 @@ public class Receipt {
 
 		double vatPaid = 0;
 		for(Entry<String, Integer> item : saleDescription.getItems().entrySet()) {
-			ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(item.getKey());
+			ItemDescription itemDesc = null;
+
+			try {
+				itemDesc = systems.getInventorySystem().getItemDescription(item.getKey());
+			} catch (ItemNotFoundException e) {
+				throw new IllegalStateException(e);
+			}
+
 			/* Calculate difference between price with and without VAT */
 			vatPaid += (itemDesc.getPriceWithVAT() - itemDesc.getPrice()) * item.getValue();
 		}
