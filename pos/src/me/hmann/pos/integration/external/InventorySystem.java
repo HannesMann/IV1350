@@ -1,5 +1,6 @@
 package me.hmann.pos.integration.external;
 
+import me.hmann.pos.integration.exceptions.DatabaseException;
 import me.hmann.pos.integration.exceptions.ItemNotFoundException;
 import me.hmann.pos.model.dto.ItemDescription;
 import me.hmann.pos.model.dto.SaleDescription;
@@ -41,6 +42,15 @@ public class InventorySystem {
 	 * @return The item description, or null.
 	 */
 	public ItemDescription getItemDescription(String id) throws ItemNotFoundException {
+		/* Used in the seminar to simulate database failure. */
+		if(id.equals("COLA100")) {
+			throw new DatabaseException(this, "The database for the inventory system is overloaded.");
+		}
+
+		if(id.equals("COLA200")) {
+			throw new DatabaseException(this, "A connection could not be establised to the inventory database server.");
+		}
+
 		if(!AVAILABLE_ITEMS.containsKey(id)) {
 			throw new ItemNotFoundException(this, id);
 		}
