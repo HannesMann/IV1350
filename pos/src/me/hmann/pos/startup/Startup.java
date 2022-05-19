@@ -1,7 +1,7 @@
 package me.hmann.pos.startup;
 
 import me.hmann.pos.controller.PosController;
-import me.hmann.pos.debug.ErrorLog;
+import me.hmann.pos.util.ErrorLog;
 import me.hmann.pos.integration.IntegrationSystems;
 import me.hmann.pos.view.PosView;
 

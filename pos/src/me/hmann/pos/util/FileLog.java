@@ -1,4 +1,4 @@
-package me.hmann.pos.debug;
+package me.hmann.pos.util;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,18 +7,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Responsible for logging runtime errors that cannot be handled gracefully in the view.
+ * Used for logging messages to a file.
  */
-public class ErrorLog {
-	private final static String FILENAME = "errors.log";
-
+public class FileLog {
 	private PrintWriter printWriter;
 
 	/**
-	 * Create a new error log, which will log to the file "error-log.txt" in the current directory.
+	 * Create a new error log, which will log to the specified file.
+	 * @param filename The file to create and use for logging.
 	 */
-	public ErrorLog() throws IOException {
-		printWriter = new PrintWriter(new FileWriter(FILENAME), false);
+	public FileLog(String filename) throws IOException {
+		printWriter = new PrintWriter(new FileWriter(filename), false);
 		printMessage("Started logging.");
 	}
 
@@ -28,29 +27,19 @@ public class ErrorLog {
 	 */
 	public void printMessage(String message) {
 		if(printWriter != null) {
-			printWriter.print(dateAndTimeAsString() + " - ");
+			printWriter.print("[" + dateAndTimeAsString() + "] ");
 			printWriter.println(message);
 		}
 	}
 
 	/**
-	 * Print an exception, including stack trace, to the log.
-	 * @param exception The exception.
-	 */
-	public void printException(Exception exception) {
-		printMessage("Unhandled exception caught.");
-		if(printWriter != null) {
-			exception.printStackTrace(printWriter);
-		}
-	}
-
-	/**
-	 * Indicate that the program is finished and logging should stop.
+	 * Indicate that the program is finished with this object and logging should stop.
 	 */
 	public void finish() {
 		printMessage("Finished logging.");
 
 		printWriter.flush();
+		printWriter.close();
 		printWriter = null;
 	}
 
