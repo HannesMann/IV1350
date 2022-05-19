@@ -2,14 +2,13 @@ package me.hmann.pos.integration.exceptions;
 
 /**
  * Indicates that an error occurred when running a query on a database.
+ * It's unlikely that the program can continue.
  *
  * This could be because:
  * - A connection could not be established to the database server.
  * - The database server is not running.
  * - The database server is overloaded.
  * - The query to the database was invalid.
- *
- * The message description indicates what error has occurred.
  */
 public class DatabaseException extends RuntimeException {
 	private Object originatingObject;
