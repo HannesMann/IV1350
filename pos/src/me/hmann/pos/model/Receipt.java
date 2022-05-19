@@ -76,7 +76,7 @@ public class Receipt {
 		printer.printLine("OPEN ALL DAYS 8-22");
 		printer.printLine("");
 
-		/* Nanoseconds are too much precision */
+		/* Nanoseconds give too much precision */
 		String dateString = DateTimeFormatter.ISO_LOCAL_DATE.format(dateAndTime.withNano(0));
 		dateString += " ";
 		dateString += DateTimeFormatter.ISO_LOCAL_TIME.format(dateAndTime.withNano(0));

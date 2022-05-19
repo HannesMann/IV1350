@@ -134,7 +134,10 @@ public class PosView {
 		}
 		catch(Exception exception) {
 			System.out.println("A fatal program error has occurred and the sale cannot be continued.");
-			System.out.println("For developers: See error-log.txt for more information.");
+			System.out.println("For developers: See errors.log for more information.");
+
+			/* Propagate exception to error log. */
+			throw exception;
 		}
 	}
 }
