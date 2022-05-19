@@ -42,7 +42,7 @@ public class InventorySystem {
 	 */
 	public ItemDescription getItemDescription(String id) throws ItemNotFoundException {
 		if(!AVAILABLE_ITEMS.containsKey(id)) {
-			throw new ItemNotFoundException(id);
+			throw new ItemNotFoundException(this, id);
 		}
 
 		return AVAILABLE_ITEMS.get(id);

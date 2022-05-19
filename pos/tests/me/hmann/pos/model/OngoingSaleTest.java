@@ -25,7 +25,7 @@ class OngoingSaleTest {
 	@Test
 	void testNewSale() {
 		OngoingSale sale = new OngoingSale();
-		assertEquals(sale.getRunningTotal(systems), 0.0, "Sale is not empty when created");
+		assertEquals(0.0, sale.getRunningTotal(systems), "Sale is not empty when created");
 	}
 
 	@Test
@@ -34,9 +34,10 @@ class OngoingSaleTest {
 		ItemDescription description = sale.recordItem(systems, "MEATB", 2);
 
 		assertEquals(
-			description,
 			systems.getInventorySystem().getItemDescription("MEATB"),
-			"Invalid return value from recordItem");
+			description,
+			"Invalid return value from recordItem"
+		);
 	}
 
 	@Test
@@ -45,9 +46,10 @@ class OngoingSaleTest {
 		sale.recordItem(systems, "MEATB", 2);
 
 		assertEquals(
-			sale.getRunningTotal(systems),
 			systems.getInventorySystem().getItemDescription("MEATB").getPriceWithVAT() * 2,
-			"Adding multiple items with quantity parameter does not work as expected");
+			sale.getRunningTotal(systems),
+			"Adding multiple items with quantity parameter does not work as expected"
+		);
 	}
 
 	@Test
@@ -57,9 +59,10 @@ class OngoingSaleTest {
 		sale.recordItem(systems, "MEATB", 1);
 
 		assertEquals(
-			sale.getRunningTotal(systems),
 			systems.getInventorySystem().getItemDescription("MEATB").getPriceWithVAT() * 2,
-			"Adding multiple items by calling method twice does not work as expected");
+			sale.getRunningTotal(systems),
+			"Adding multiple items by calling method twice does not work as expected"
+		);
 	}
 
 	@Test
@@ -80,9 +83,10 @@ class OngoingSaleTest {
 		sale.recordItem(systems, "SAUSG", 100);
 
 		assertEquals(
-			sale.getRunningTotal(systems),
 			systems.getInventorySystem().getItemDescription("SAUSG").getPriceWithVAT() * 100,
-			"Running total calculation does not work as expected");
+			sale.getRunningTotal(systems),
+			"Running total calculation does not work as expected"
+		);
 	}
 
 	@Test
@@ -93,6 +97,7 @@ class OngoingSaleTest {
 		assertEquals(
 			sale.getRunningTotal(systems),
 			finishedSale.getTotalPrice(systems),
-			"Total price changed after sale completed");
+			"Total price changed after sale completed"
+		);
 	}
 }

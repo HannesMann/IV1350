@@ -33,13 +33,11 @@ public class OngoingSale {
 	public ItemDescription recordItem(IntegrationSystems systems, String itemId, int quantity) throws ItemNotFoundException {
 		ItemDescription itemDesc = systems.getInventorySystem().getItemDescription(itemId);
 
-		if(itemDesc != null) {
-			if(items.containsKey(itemId)) {
-				items.replace(itemId, items.get(itemId) + quantity);
-			}
-			else {
-				items.put(itemId, quantity);
-			}
+		if(items.containsKey(itemId)) {
+			items.replace(itemId, items.get(itemId) + quantity);
+		}
+		else {
+			items.put(itemId, quantity);
 		}
 
 		return itemDesc;

@@ -63,13 +63,17 @@ public class PosView {
 			}
 			else {
 				System.out.print("Item " + itemId + ", enter quantity: ");
-				int quantity = Integer.parseInt(scanner.nextLine());
-
 				try {
-					presentSaleStatus(controller.recordItem(itemId, quantity));
+					int quantity = Integer.parseInt(scanner.nextLine());
+
+					try {
+						presentSaleStatus(controller.recordItem(itemId, quantity));
+					} catch (ItemNotFoundException exception) {
+						System.out.println("An item with ID \"" + exception.getItemId() + "\" does not exist.");
+					}
 				}
-				catch(ItemNotFoundException exception) {
-					System.out.println("An item with ID \"" + exception.getItemId() + "\" does not exist!");
+				catch(NumberFormatException exception) {
+					System.out.println("An invalid quantity was specified.");
 				}
 			}
 
@@ -85,18 +89,42 @@ public class PosView {
 		System.out.print("Does the customer want to apply discounts (Y/N)? ");
 		if(scanner.nextLine().trim().equalsIgnoreCase("Y")) {
 			System.out.print("Enter customer ID: ");
-			int customerId = Integer.parseInt(scanner.nextLine().trim());
 
-			int discounts = controller.applyCustomerDiscounts(customerId);
-			System.out.println("" + discounts + " discount(s) applied to sale.");
-			System.out.println();
+			try {
+				int customerId = Integer.parseInt(scanner.nextLine().trim());
 
-			presentSaleStatus(null);
+				int discounts = controller.applyCustomerDiscounts(customerId);
+				System.out.println("" + discounts + " discount(s) applied to sale.");
+				System.out.println();
+
+				presentSaleStatus(null);
+			}
+			catch(NumberFormatException exception) {
+				System.out.println("An invalid customer ID was specified. No discounts could be applied.");
+			}
+
 			System.out.println();
 		}
 
-		System.out.print("Enter amount the customer paid: ");
-		double customerPayment = Double.parseDouble(scanner.nextLine());
+		double customerPayment = 0;
+
+		/* Repeat until correct payment has been specified. Sale cannot be ended without payment. */
+		while(true) {
+			System.out.print("Enter amount the customer paid: ");
+
+			try {
+				customerPayment = Double.parseDouble(scanner.nextLine().trim());
+				if(customerPayment > 0) {
+					break;
+				}
+				else {
+					System.out.println("An invalid payment amount was specified. Please try again.");
+				}
+			}
+			catch(NumberFormatException exception) {
+				System.out.println("An invalid payment amount was specified. Please try again.");
+			}
+		}
 
 		System.out.println("Sale completed. Printing receipt.");
 		System.out.println();
