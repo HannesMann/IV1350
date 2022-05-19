@@ -1,6 +1,8 @@
 package me.hmann.pos.model;
 
 import me.hmann.pos.integration.IntegrationSystems;
+import me.hmann.pos.integration.exceptions.ItemNotFoundException;
+import me.hmann.pos.model.dto.ItemDescription;
 import me.hmann.pos.model.dto.SaleDescription;
 
 import java.util.ArrayList;
@@ -15,13 +17,24 @@ public class Sale {
 	private TreeMap<String, Integer> items;
 	private ArrayList<Discount> discounts;
 
+	private ArrayList<SaleObserver> observers;
+
 	/**
 	 * Create sale from ongoing sale.
 	 * @param items Items the customer has bought.
 	 */
-	Sale(Map<String, Integer> items) {
+	Sale(Map<String, Integer> items, ArrayList<SaleObserver> observers) {
 		this.items = new TreeMap<>(items);
 		this.discounts = new ArrayList<>();
+		this.observers = observers;
+	}
+
+	/**
+	 * Registers a new observer that will be notified when various actions happen during the sale.
+	 * @param observer The observer.
+	 */
+	public void addSaleObserver(SaleObserver observer) {
+		observers.add(observer);
 	}
 
 	/***
@@ -34,15 +47,20 @@ public class Sale {
 		SaleDescription descriptionOfCurrentSale = getDescription();
 		Discount[] potentialDiscounts = systems.getDiscountRegistry().getDiscountsForCustomer(customerId);
 
-		int applied = 0;
+		ArrayList<Discount> applied = new ArrayList<>();
 		for(Discount discount : potentialDiscounts) {
 			if(discount.doesDiscountApply(systems, descriptionOfCurrentSale)) {
-				discounts.add(discount);
-				applied++;
+				applied.add(discount);
 			}
 		}
 
-		return applied;
+		discounts.addAll(applied);
+
+		for(SaleObserver observer : observers) {
+			observer.onDiscountsApplied(applied);
+		}
+
+		return applied.size();
 	}
 
 	/***
@@ -82,6 +100,30 @@ public class Sale {
 
 		Receipt receipt = new Receipt(getDescription(), amountPaid);
 		receipt.print(externalSystems);
+
+		double storeRevenue = saleDesc.getTotalPrice(externalSystems);
+		for(Map.Entry<String, Integer> entry : items.entrySet()) {
+			ItemDescription itemDesc = null;
+
+			try {
+				itemDesc = externalSystems.getInventorySystem().getItemDescription(entry.getKey());
+			} catch (ItemNotFoundException e) {
+				throw new IllegalStateException(e);
+			}
+
+			/* Remove the VAT applied in getTotalPrice. TODO: There really should be a more robust interface for this. */
+			storeRevenue -= itemDesc.getPrice() * itemDesc.getTaxRate().toPercent() * entry.getValue();
+		}
+
+		/* The store can never lose money from a sale */
+		if(storeRevenue < 0) {
+			storeRevenue = 0;
+		}
+
+		for(SaleObserver observer : observers) {
+			observer.onCustomerPayment(storeRevenue, amountPaid);
+		}
+
 		return receipt;
 	}
 }

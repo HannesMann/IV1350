@@ -4,6 +4,7 @@ import me.hmann.pos.integration.IntegrationSystems;
 import me.hmann.pos.integration.exceptions.ItemNotFoundException;
 import me.hmann.pos.model.OngoingSale;
 import me.hmann.pos.model.Sale;
+import me.hmann.pos.model.SaleObserver;
 import me.hmann.pos.model.dto.ItemDescription;
 
 /***
@@ -87,5 +88,22 @@ public class PosController {
 	 */
 	public double payAndPrintReceipt(double amount) {
 		return sale.payAndPrintReceipt(amount, integrationSystems).getChange(integrationSystems);
+	}
+
+	/**
+	 * Registers a new observer that will be notified when various actions happen during the sale.
+	 *
+	 * This should ideally be called right after startSale so all notifications will be received.
+	 * Starting a new sale will reset the active observer list.
+	 *
+	 * @param observer The observer.
+	 */
+	public void addSaleObserver(SaleObserver observer) {
+		if(ongoingSale != null) {
+			ongoingSale.addSaleObserver(observer);
+		}
+		else {
+			sale.addSaleObserver(observer);
+		}
 	}
 }

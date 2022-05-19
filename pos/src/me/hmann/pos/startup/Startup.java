@@ -1,8 +1,8 @@
 package me.hmann.pos.startup;
 
 import me.hmann.pos.controller.PosController;
-import me.hmann.pos.util.ErrorLog;
 import me.hmann.pos.integration.IntegrationSystems;
+import me.hmann.pos.util.ErrorLog;
 import me.hmann.pos.view.PosView;
 
 import java.io.IOException;
@@ -16,13 +16,17 @@ public class Startup {
 	 * @param args Command line arguments.
 	 */
     public static void main(String[] args) {
+		/*
+		 * The debug log could possibly fit better in the view,
+		 * but this is the only class that has access to everything in the program.
+		 */
 		ErrorLog debugLog = null;
 
 		try {
 			debugLog = new ErrorLog();
 		} catch(IOException e) {
 			System.out.println("WARNING FOR DEVELOPERS: File errors.log could not be created.");
-			System.out.println("Program will continue without logging.");
+			System.out.println("Program will continue without logging errors.");
 			System.out.println();
 		}
 

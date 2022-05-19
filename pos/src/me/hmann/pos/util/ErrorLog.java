@@ -1,6 +1,5 @@
 package me.hmann.pos.util;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -16,6 +15,7 @@ public class ErrorLog extends FileLog {
 	 */
 	public ErrorLog() throws IOException {
 		super(FILENAME);
+		printMessage("");
 	}
 
 	/**
@@ -34,6 +34,7 @@ public class ErrorLog extends FileLog {
 		for(String line : stringWriter.toString().split(System.lineSeparator())) {
 			printMessage(line);
 		}
+		printMessage("");
 
 		tempWriter.close();
 	}

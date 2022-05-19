@@ -14,12 +14,23 @@ import java.util.HashMap;
  */
 public class OngoingSale {
 	private HashMap<String, Integer> items;
+	private ArrayList<SaleObserver> observers;
 
 	/**
 	 * Start a new sale.
 	 */
 	public OngoingSale() {
 		items = new HashMap<>();
+		observers = new ArrayList<>();
+	}
+
+	/**
+	 * Registers a new observer that will be notified when various actions happen during the sale.
+	 * The observer will be carried over once completeSale is called.
+	 * @param observer The observer.
+	 */
+	public void addSaleObserver(SaleObserver observer) {
+		observers.add(observer);
 	}
 
 	/***
@@ -40,6 +51,10 @@ public class OngoingSale {
 			items.put(itemId, quantity);
 		}
 
+		for(SaleObserver observer : observers) {
+			observer.onItemQuantityIncreased(itemId, items.get(itemId));
+		}
+
 		return itemDesc;
 	}
 
@@ -56,6 +71,6 @@ public class OngoingSale {
 	 * @return A new sale object containing all items in this sale.
 	 */
 	public Sale completeSale() {
-		return new Sale(items);
+		return new Sale(items, observers);
 	}
 }

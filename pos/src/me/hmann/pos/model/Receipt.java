@@ -5,8 +5,8 @@ import me.hmann.pos.integration.exceptions.ItemNotFoundException;
 import me.hmann.pos.integration.internal.Printer;
 import me.hmann.pos.model.dto.ItemDescription;
 import me.hmann.pos.model.dto.SaleDescription;
+import me.hmann.pos.util.CurrencyFormatter;
 
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map.Entry;
@@ -64,11 +64,6 @@ public class Receipt {
 	 * @param systems External systems needed to retrieve item information and printer.
 	 */
 	public void print(IntegrationSystems systems) {
-		/* Used to format currency */
-		DecimalFormat df = new DecimalFormat();
-		df.setGroupingUsed(false);
-		df.setMaximumFractionDigits(2);
-
 		Printer printer = systems.getPrinter();
 		printer.startPrint();
 
@@ -95,7 +90,7 @@ public class Receipt {
 				throw new IllegalStateException(e);
 			}
 
-			printer.printLine(itemDesc.getName() + " (" + item.getValue() + ") - " + df.format(itemDesc.getPriceWithVAT()) + " kr (VAT " + itemDesc.getTaxRate() + ")");
+			printer.printLine(itemDesc.getName() + " (" + item.getValue() + ") - " + CurrencyFormatter.format(itemDesc.getPriceWithVAT()) + " kr (VAT " + itemDesc.getTaxRate() + ")");
 		}
 		printer.printLine("----------");
 		printer.printLine("");
@@ -105,13 +100,13 @@ public class Receipt {
 			printer.printLine("----------");
 			for(Discount discount : saleDescription.getAppliedDiscounts()) {
 				double reduction = discount.getPriceReduction(systems, saleDescription);
-				printer.printLine(discount.getDescription(systems) + " - " + df.format(reduction) + " kr");
+				printer.printLine(discount.getDescription(systems) + " - " + CurrencyFormatter.format(reduction) + " kr");
 			}
 			printer.printLine("----------");
 			printer.printLine("");
 		}
 
-		printer.printLine("Total: " + df.format(saleDescription.getTotalPrice(systems)) + " kr");
+		printer.printLine("Total: " + CurrencyFormatter.format(saleDescription.getTotalPrice(systems)) + " kr");
 
 		double vatPaid = 0;
 		for(Entry<String, Integer> item : saleDescription.getItems().entrySet()) {
@@ -127,10 +122,10 @@ public class Receipt {
 			vatPaid += (itemDesc.getPriceWithVAT() - itemDesc.getPrice()) * item.getValue();
 		}
 
-		printer.printLine("VAT: " + df.format(vatPaid) + " kr");
+		printer.printLine("VAT: " + CurrencyFormatter.format(vatPaid) + " kr");
 		printer.printLine("");
-		printer.printLine("Amount paid: " + df.format(amountPaid) + " kr");
-		printer.printLine("Change: " + df.format(getChange(systems)) + " kr");
+		printer.printLine("Amount paid: " + CurrencyFormatter.format(amountPaid) + " kr");
+		printer.printLine("Change: " + CurrencyFormatter.format(getChange(systems)) + " kr");
 
 		printer.finishPrint();
 	}
