@@ -26,7 +26,7 @@ public class PosController {
 
 	/***
 	 * Used by the cashier to start a new sale.
-	 * If a sale is already ongoing, this function will fail.
+	 * @throws IllegalStateException If a sale is already ongoing.
 	 */
 	public void startSale() {
 		if(ongoingSale != null) {
@@ -39,7 +39,7 @@ public class PosController {
 
 	/***
 	 * Used by the cashier to complete a sale.
-	 * If a sale has not started, this function will fail.
+	 * @throws IllegalStateException If a sale has not started.
 	 */
 	public void endSale() {
 		if(ongoingSale == null) {

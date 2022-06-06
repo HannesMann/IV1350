@@ -87,6 +87,7 @@ public class Sale {
 	 * The sale will be logged when this method is called.
 	 * @param amountPaid The amount the customer paid.
 	 * @param externalSystems External systems that are used to log the sale.
+	 * @throws IllegalStateException If this sale has been created with invalid data.
 	 * @return A receipt for the sale.
 	 */
 	public Receipt payAndPrintReceipt(double amountPaid, IntegrationSystems externalSystems) {

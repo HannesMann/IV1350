@@ -39,6 +39,7 @@ public class SaleDescription {
 
 	/**
 	 * @param systems External systems needed to retrieve price.
+	 * @throws IllegalStateException If this sale description was created with invalid data.
 	 * @return The total price for the sale.
 	 */
 	public double getTotalPrice(IntegrationSystems systems) {

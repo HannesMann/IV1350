@@ -39,7 +39,9 @@ public class InventorySystem {
 	/**
 	 * Get a full description of an item based on its identifier.
 	 * @param id The internal ID of the item.
-	 * @return The item description, or null.
+	 * @return The item description.
+	 * @throws ItemNotFoundException If an item with the specified ID does not exist in the inventory system.
+	 * @throws DatabaseException If the inventory system database could not be reached.
 	 */
 	public ItemDescription getItemDescription(String id) throws ItemNotFoundException {
 		/* Used in the seminar to simulate database failure. */

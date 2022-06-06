@@ -62,6 +62,7 @@ public class Receipt {
 	/***
 	 * Prints this receipt to a printer.
 	 * @param systems External systems needed to retrieve item information and printer.
+	 * @throws IllegalStateException If this receipt has been created with invalid data.
 	 */
 	public void print(IntegrationSystems systems) {
 		Printer printer = systems.getPrinter();
