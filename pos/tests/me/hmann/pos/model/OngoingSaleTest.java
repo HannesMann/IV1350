@@ -66,18 +66,6 @@ class OngoingSaleTest {
 	}
 
 	@Test
-	void testRecordInvalidItem() {
-		OngoingSale sale = new OngoingSale();
-
-		/* An exception of type ItemNotFoundException is expected here. */
-		assertThrows(
-			ItemNotFoundException.class,
-			() -> { sale.recordItem(systems, "AAAAA", 1); },
-			"Adding invalid item did not throw exception"
-		);
-	}
-
-	@Test
 	void testRunningTotal() throws ItemNotFoundException {
 		OngoingSale sale = new OngoingSale();
 		sale.recordItem(systems, "SAUSG", 100);

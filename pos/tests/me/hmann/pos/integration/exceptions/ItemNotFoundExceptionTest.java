@@ -1,5 +1,6 @@
 package me.hmann.pos.integration.exceptions;
 
+import me.hmann.pos.controller.PosController;
 import me.hmann.pos.integration.IntegrationSystems;
 import me.hmann.pos.integration.external.InventorySystem;
 import me.hmann.pos.model.OngoingSale;
@@ -12,15 +13,44 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ItemNotFoundExceptionTest {
 	private IntegrationSystems systems;
+	private OngoingSale sale;
+	private PosController controller;
 
 	@BeforeEach
 	void setUp() {
 		systems = new IntegrationSystems();
+		sale = new OngoingSale();
+
+		controller = new PosController(systems);
+		controller.startSale();
 	}
 
 	@AfterEach
 	void finish() {
 		systems = null;
+		sale = null;
+		controller = null;
+	}
+
+	@Test
+	void testExceptionIsThrown() {
+		assertThrows(
+			ItemNotFoundException.class,
+			() -> { systems.getInventorySystem().getItemDescription("AAAAA"); },
+			"Retrieving invalid item did not throw exception"
+		);
+
+		assertThrows(
+			ItemNotFoundException.class,
+			() -> { sale.recordItem(systems, "AAAAA", 1); },
+			"Adding invalid item to sale did not throw exception"
+		);
+
+		assertThrows(
+			ItemNotFoundException.class,
+			() -> { controller.recordItem( "AAAAA", 1); },
+			"Adding invalid item to controller did not throw exception"
+		);
 	}
 
 	@Test
